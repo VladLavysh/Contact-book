@@ -1,16 +1,14 @@
 <template>
-  <div :class="{ wrapper: showAddContact }">
-    <add-contact v-if="showAddContact" />
-    <all-contacts
-      :isAddContactShown="showAddContact"
-      @toggle-component="showAddContact = !showAddContact"
-    />
+  <div :class="{ wrapper: isShown }">
+    <add-contact v-if="isShown" />
+    <all-contacts />
   </div>
 </template>
 
 <script>
 import AllContacts from "../views/AllContacts.vue";
 import AddContact from "../views/AddContact.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -18,9 +16,7 @@ export default {
     AddContact
   },
 
-  data: () => ({
-    showAddContact: false
-  })
+  computed: mapGetters(["isShown"])
 };
 </script>
 

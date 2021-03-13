@@ -1,0 +1,18 @@
+          <custom-input
+            v-for="count of customInputsCount"
+            :key="count"
+            @field-created="activeField = !activeField"
+          />
+
+          <span
+            class="input-fields__add-new-field"
+            :class="{ 'add-btn-disabled': activeField }"
+            @click="addInputField"
+          >
+            добавить поле
+          </span>
+
+              addInputField() {
+      this.customInputsCount++;
+      this.activeField = true;
+    },

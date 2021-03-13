@@ -2,7 +2,7 @@
   <div class="contacts">
     <div class="contacts__header">
       <span class="title">Контакты</span>
-      <span class="icon material-icons" @click="toggleAddContact">
+      <span class="icon material-icons" @click="changeVisibility">
         {{ currentIcon }}
       </span>
     </div>
@@ -23,37 +23,25 @@
 
 <script>
 import Contact from "../components/Contact.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "all-contacts",
   components: { Contact },
 
-  props: {
-    isAddContactShown: Boolean
-  },
-
-  data: () => ({}),
-
   computed: {
-    ...mapGetters(["allContacts"]),
+    ...mapGetters(["allContacts", "isShown"]),
 
     currentIcon() {
-      return this.isAddContactShown
-        ? "person_remove_alt_1"
-        : "person_add_alt_1";
+      return this.isShown ? "person_remove_alt_1" : "person_add_alt_1";
     }
   },
 
   methods: {
-    toggleAddContact() {
-      this.$emit("toggle-component");
-    }
-
-    //removeContact(contactToRemove) {
-    //  this.contacts = this.contacts.filter(
-    //    contact => contact.name !== contactToRemove.name
-    //  );
+    ...mapMutations(["changeVisibility"])
+    //toggleAddContact() {
+    //  this.$emit("toggle-component");
+    //  this.isShown = !this.isShown;
     //}
   }
 };

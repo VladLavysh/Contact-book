@@ -10,48 +10,52 @@ export default new Vuex.Store({
         firstName: "Vladislav",
         secondName: "Lavysh",
         phoneNumber: "+48 518 254 052",
-        fullName() {
-          return `${this.firstName} ${this.secondName}`;
-        },
-        abbr() {
-          return this.firstName[0] + this.secondName[0];
-        }
-      },
-      {
-        firstName: "Andrey",
-        secondName: "McDowson",
-        phoneNumber: "+51 (14) 240 525",
-        fullName() {
-          return `${this.firstName} ${this.secondName}`;
-        },
-        abbr() {
-          return this.firstName[0] + this.secondName[0];
-        }
-      },
-      {
-        firstName: "Mike",
-        secondName: "Kellinger",
-        phoneNumber: "+98 875 214 638",
-        fullName() {
-          return `${this.firstName} ${this.secondName}`;
-        },
-        abbr() {
-          return this.firstName[0] + this.secondName[0];
-        }
+        fullName: "Vladislav Lavysh",
+        abbr: "VL"
       }
-    ]
+    ],
+
+    customFieldsData: [],
+
+    showAddContact: false
   },
+
   mutations: {
+    createContact(state, newContact) {
+      state.contacts.push(newContact);
+    },
     deleteContact(state, contactToDelete) {
       state.contacts = state.contacts.filter(
         contact => contact !== contactToDelete
       );
+    },
+
+    createField(state, newField) {
+      state.customFieldsData.unshift(newField);
+      console.log(state.customFieldsData);
+    },
+    deleteField(state, fieldToDelete) {
+      state.customFieldsData = state.customFieldsData.filter(
+        field => field !== fieldToDelete
+      );
+    },
+
+    changeVisibility(state) {
+      state.showAddContact = !state.showAddContact;
     }
   },
+
   actions: {},
+
   getters: {
     allContacts(state) {
       return state.contacts;
+    },
+    allFields(state) {
+      return state.customFieldsData;
+    },
+    isShown(state) {
+      return state.showAddContact;
     }
   }
 });

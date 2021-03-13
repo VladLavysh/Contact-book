@@ -2,10 +2,10 @@
   <div class="contact">
     <div class="info">
       <div class="info__icon-abbr">
-        {{ contact.abbr() }}
+        {{ contact.abbr }}
       </div>
       <span class="info__name-surname">
-        {{ contact.fullName() }}
+        {{ contact.fullName }}
       </span>
       <span class="info__phone">
         {{ contact.phoneNumber }}
@@ -87,7 +87,6 @@ export default {
     position: absolute;
     right: -170px;
     padding: 5px 10px;
-    margin-left: 50px;
 
     display: flex;
     flex-direction: column;
