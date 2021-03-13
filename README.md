@@ -1,4 +1,5 @@
-# contact-book
+# Contact book
+### A primitive SPA application using Vue.js
 
 ## Project setup
 ```
