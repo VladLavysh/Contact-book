@@ -1,14 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import AllContacts from "../views/AllContacts.vue";
+import MainLayout from "../layouts/MainLayout.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "all-contacts",
-    component: AllContacts
+    name: "main-layots",
+    component: MainLayout
   }
   //{
   //  path: "/about",
