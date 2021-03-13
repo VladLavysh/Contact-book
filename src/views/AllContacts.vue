@@ -37,6 +37,7 @@ export default {
 
   computed: {
     ...mapGetters(["allContacts"]),
+
     currentIcon() {
       return this.isAddContactShown
         ? "person_remove_alt_1"
@@ -47,13 +48,13 @@ export default {
   methods: {
     toggleAddContact() {
       this.$emit("toggle-component");
-    },
-
-    removeContact(contactToRemove) {
-      this.contacts = this.contacts.filter(
-        contact => contact.name !== contactToRemove.name
-      );
     }
+
+    //removeContact(contactToRemove) {
+    //  this.contacts = this.contacts.filter(
+    //    contact => contact.name !== contactToRemove.name
+    //  );
+    //}
   }
 };
 </script>

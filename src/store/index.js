@@ -41,7 +41,13 @@ export default new Vuex.Store({
       }
     ]
   },
-  mutations: {},
+  mutations: {
+    deleteContact(state, contactToDelete) {
+      state.contacts = state.contacts.filter(
+        contact => contact !== contactToDelete
+      );
+    }
+  },
   actions: {},
   getters: {
     allContacts(state) {

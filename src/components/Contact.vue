@@ -16,12 +16,16 @@
     </span>
     <div class="contact__options" v-if="showOptions">
       <span class="btn-contact-info">О контакте</span>
-      <span class="btn-contact-remove"> Удалить контакт </span>
+      <span class="btn-contact-remove" @click="removeContact(contact)">
+        Удалить контакт
+      </span>
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "contact",
   props: { contact: Object },
@@ -34,8 +38,17 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["deleteContact"]),
+
     toggleContactOptions() {
       this.showOptions = !this.showOptions;
+    },
+
+    removeContact(contactToDelete) {
+      const confirm = window.confirm("Вы уверены что хотите удалить контакт?");
+
+      if (confirm) this.deleteContact(contactToDelete);
+      else return;
     }
   }
 };
