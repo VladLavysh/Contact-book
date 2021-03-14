@@ -119,7 +119,7 @@ export default {
   }
 
   input {
-    width: 125px;
+    width: 140px;
   }
 }
 </style>

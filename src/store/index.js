@@ -10,12 +10,15 @@ export default new Vuex.Store({
         firstName: "Vladislav",
         secondName: "Lavysh",
         phoneNumber: "+48 518 254 052",
-        fullName: "Vladislav Lavysh",
-        abbr: "VL"
+        abbr: "VL",
+        iconColor: "#f5bd48",
+        id: Date.now()
       }
     ],
 
     customFieldsData: [],
+
+    selectedContact: null,
 
     showAddContact: false
   },
@@ -42,10 +45,15 @@ export default new Vuex.Store({
 
     changeVisibility(state) {
       state.showAddContact = !state.showAddContact;
+    },
+
+    selectContact(state, contact) {
+      state.selectedContact = contact;
+    },
+    nullifyContact(state) {
+      state.selectedContact = null;
     }
   },
-
-  actions: {},
 
   getters: {
     allContacts(state) {
@@ -56,6 +64,10 @@ export default new Vuex.Store({
     },
     isShown(state) {
       return state.showAddContact;
+    },
+    selectedContact(state) {
+      //return state.selectedContact;
+      return state.contacts[0]; // --- !!! ---
     }
   }
 });

@@ -12,7 +12,7 @@
             добавить поле
           </span>
 
-              addInputField() {
-      this.customInputsCount++;
-      this.activeField = true;
-    },
+    #          addInputField() {
+    #  this.customInputsCount++;
+    #  this.activeField = true;
+    #},

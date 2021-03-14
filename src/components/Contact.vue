@@ -1,11 +1,14 @@
 <template>
   <div class="contact">
     <div class="info">
-      <div class="info__icon-abbr">
+      <div
+        class="info__icon-abbr"
+        :style="{ 'background-color': contact.iconColor }"
+      >
         {{ contact.abbr }}
       </div>
       <span class="info__name-surname">
-        {{ contact.fullName }}
+        {{ contact.firstName + " " + contact.secondName }}
       </span>
       <span class="info__phone">
         {{ contact.phoneNumber }}
@@ -15,7 +18,12 @@
       more_vert
     </span>
     <div class="contact__options" v-if="showOptions">
-      <span class="btn-contact-info">О контакте</span>
+      <router-link to="/contact">
+        <span class="btn-contact-info" @click="selectContact(contact)">
+          О контакте
+        </span>
+      </router-link>
+
       <span class="btn-contact-remove" @click="removeContact(contact)">
         Удалить контакт
       </span>
@@ -38,7 +46,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["deleteContact"]),
+    ...mapMutations(["deleteContact", "selectContact"]),
 
     toggleContactOptions() {
       this.showOptions = !this.showOptions;
@@ -127,7 +135,7 @@ export default {
       margin-right: 30px;
       border-radius: 50%;
       color: #fff;
-      background-color: rgb(248, 205, 113);
+      //background-color: rgb(248, 205, 113);
     }
     &__name-surname {
       width: 200px;

@@ -10,7 +10,7 @@
       <div v-if="allContacts.length">
         <contact
           v-for="contact of allContacts"
-          :key="contact.phoneNumber"
+          :key="contact.id"
           :contact="contact"
         />
       </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Contact from "../components/Contact.vue";
+import Contact from "./Contact.vue";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {

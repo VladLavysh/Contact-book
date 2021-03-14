@@ -1,28 +1,34 @@
 <template>
-  <div class="add-contact">
+  <div class="contact-card">
     <div class="contacts__header">
       <span class="title">Добавить контакт</span>
     </div>
     <div class="add-contact__main main-info">
-      <div class="main-info__icon">{{ contactAbbr || "" }}</div>
+      <div class="main-info__icon" :style="{ 'background-color': randomColor }">
+        {{ contactAbbr || "" }}
+      </div>
       <form class="main-info__create-form" @submit.prevent="submit">
         <div class="input-fields">
           <input
             :class="{ 'input-wrong': !firstName && isWrong }"
             v-model.trim="firstName"
             type="text"
+            maxlength="25"
             placeholder="Имя"
           />
           <input
             :class="{ 'input-wrong': !secondName && isWrong }"
             v-model.trim="secondName"
             type="text"
+            maxlength="25"
             placeholder="Фамилия"
           />
           <input
             :class="{ 'input-wrong': !phoneNumber && isWrong }"
             v-model.trim="phoneNumber"
-            type="tel"
+            type="number"
+            min="100000000"
+            max="999999999999"
             placeholder="Мобильный телефон"
           />
         </div>
@@ -43,17 +49,19 @@ export default {
 
     isWrong: false
   }),
+
   methods: {
     ...mapMutations(["createContact", "changeVisibility"]),
 
     submit() {
       if (this.firstName && this.secondName && this.phoneNumber) {
         const newContact = {
-          firstName: this.firstName,
-          secondName: this.secondName,
-          phoneNumber: this.phoneNumber,
-          fullName: this.contactFullName,
-          abbr: this.contactAbbr
+          firstName: this.capitalizeWord(this.firstName),
+          secondName: this.capitalizeWord(this.secondName),
+          phoneNumber: this.validPhoneNumber,
+          abbr: this.contactAbbr,
+          iconColor: this.randomColor,
+          id: Date.now()
         };
 
         this.createContact(newContact);
@@ -65,6 +73,10 @@ export default {
         this.isWrong = true;
         setTimeout(() => (this.isWrong = false), 2000);
       }
+    },
+
+    capitalizeWord(word) {
+      return word[0].toUpperCase() + word.substring(1);
     }
   },
 
@@ -72,19 +84,22 @@ export default {
     contactAbbr() {
       const firstLetter = this.firstName[0]?.toUpperCase() || "";
       const secondLetter = this.secondName[0]?.toUpperCase() || "";
-
       return firstLetter + secondLetter;
     },
 
-    contactFullName() {
-      return `${this.firstName} ${this.secondName}`;
+    randomColor() {
+      return "#" + Math.floor(Math.random() * 16777215).toString(16);
+    },
+
+    validPhoneNumber() {
+      return "+" + this.phoneNumber.match(/\d{1,3}/g).join(" ");
     }
   }
 };
 </script>
 
 <style lang="scss">
-.add-contact {
+.contact-card {
   margin: 0 auto;
   width: 320px;
   background-color: #daedf1;
@@ -107,7 +122,6 @@ export default {
     margin-bottom: 30px;
 
     font-size: 2.5rem;
-    background-color: chocolate;
     color: #f9f9f9;
     border-radius: 50%;
   }
@@ -127,7 +141,7 @@ export default {
     border-radius: 5px;
 
     font-size: 1rem;
-    background-color: #ea853d;
+    background-color: #6f96ed;
     color: #fff;
 
     outline: none;
@@ -137,8 +151,8 @@ export default {
     &:hover {
       transition: all 0.3s;
       background-color: #f9f9f9;
-      border: 2px solid #ea853d;
-      color: #ea853d;
+      border: 2px solid #6f96ed;
+      color: #6f96ed;
     }
   }
 }
@@ -149,7 +163,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 35px;
+  margin-bottom: 10px;
 
   &__add-new-field {
     margin-top: 5px;
@@ -162,11 +176,6 @@ export default {
     }
   }
 
-  .add-btn-disabled {
-    pointer-events: none;
-    color: #9db7ee;
-  }
-
   .input-wrong {
     border-color: #df6161;
 
@@ -177,13 +186,15 @@ export default {
   }
 
   input {
-    width: 80%;
-    height: 25px;
+    width: 85%;
+    height: 30px;
     margin-bottom: 10px;
-    padding: 2px 5px;
+    padding-left: 7px;
+    box-sizing: border-box;
 
     font-size: 1rem;
     background-color: #f9f9f9;
+    color: #494848;
     border: 1px solid #ccc;
     border-radius: 5px;
     outline: none;

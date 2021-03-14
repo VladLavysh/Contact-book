@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import AllContacts from "../views/AllContacts.vue";
-import AddContact from "../views/AddContact.vue";
+import AllContacts from "../components/AllContacts.vue";
+import AddContact from "../components/AddContact.vue";
 import { mapGetters } from "vuex";
 
 export default {

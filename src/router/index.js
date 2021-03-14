@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import MainLayout from "../layouts/MainLayout.vue";
+import MainLayout from "../views/MainLayout.vue";
 
 Vue.use(VueRouter);
 
@@ -9,13 +9,12 @@ const routes = [
     path: "/",
     name: "main-layots",
     component: MainLayout
+  },
+  {
+    path: "/contact",
+    name: "selected-contact",
+    component: () => import("../views/ContactLayout.vue")
   }
-  //{
-  //  path: "/about",
-  //  name: "About",
-  //  component: () =>
-  //    import(/* webpackChunkName: "about" */ "../views/About.vue")
-  //}
 ];
 
 const router = new VueRouter({
