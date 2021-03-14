@@ -11,7 +11,7 @@ const routes = [
     component: MainLayout
   },
   {
-    path: "/contact",
+    path: "/contact/:idx",
     name: "selected-contact",
     component: () => import("../views/ContactLayout.vue")
   }

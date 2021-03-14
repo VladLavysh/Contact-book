@@ -67,6 +67,13 @@ export default {
   components: {
     CustomInput
   },
+
+  created() {
+    //const selectedContactNum = window.location.pathname.match(/\d+/).join("");
+    //console.log(selectedContactNum);
+    //this.selectedContact(selectedContactNum);
+  },
+
   computed: {
     ...mapGetters(["selectedContact"])
   },

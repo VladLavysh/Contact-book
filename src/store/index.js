@@ -12,7 +12,7 @@ export default new Vuex.Store({
         phoneNumber: "+48 518 254 052",
         abbr: "VL",
         iconColor: "#f5bd48",
-        id: Date.now()
+        idx: 0
       }
     ],
 
@@ -24,6 +24,10 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    updateContacts(state, contactsFromLs) {
+      state.contacts = contactsFromLs;
+    },
+
     createContact(state, newContact) {
       state.contacts.push(newContact);
     },
@@ -47,8 +51,10 @@ export default new Vuex.Store({
       state.showAddContact = !state.showAddContact;
     },
 
-    selectContact(state, contact) {
-      state.selectedContact = contact;
+    selectContact(state, contactIdx) {
+      state.selectedContact = state.contacts.find(
+        contact => contact.idx === contactIdx
+      );
     },
     nullifyContact(state) {
       state.selectedContact = null;
@@ -66,8 +72,12 @@ export default new Vuex.Store({
       return state.showAddContact;
     },
     selectedContact(state) {
-      //return state.selectedContact;
-      return state.contacts[0]; // --- !!! ---
+      const contactNum = window.location.pathname.match(/\d+/)?.join("");
+
+      console.log(contactNum);
+
+      return state.selectedContact || state.contacts[contactNum];
+      //return state.contacts[0]; // --- !!! ---
     }
   }
 });

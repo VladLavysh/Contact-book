@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   data: () => ({
@@ -61,10 +61,12 @@ export default {
           phoneNumber: this.validPhoneNumber,
           abbr: this.contactAbbr,
           iconColor: this.randomColor,
-          id: Date.now()
+          idx: this.allContacts.length
         };
 
         this.createContact(newContact);
+
+        localStorage.setItem("contact-list", JSON.stringify(this.allContacts));
 
         this.firstName = this.secondName = this.phoneNumber = "";
 
@@ -81,6 +83,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["allContacts"]),
+
     contactAbbr() {
       const firstLetter = this.firstName[0]?.toUpperCase() || "";
       const secondLetter = this.secondName[0]?.toUpperCase() || "";

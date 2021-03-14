@@ -18,8 +18,8 @@
       more_vert
     </span>
     <div class="contact__options" v-if="showOptions">
-      <router-link to="/contact">
-        <span class="btn-contact-info" @click="selectContact(contact)">
+      <router-link :to="'/contact/' + contact.idx">
+        <span class="btn-contact-info" @click="selectContact(contact.idx)">
           О контакте
         </span>
       </router-link>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "contact",
@@ -45,6 +45,8 @@ export default {
     window.addEventListener("click", () => (this.showOptions = false));
   },
 
+  computed: mapGetters(["allContacts"]),
+
   methods: {
     ...mapMutations(["deleteContact", "selectContact"]),
 
@@ -55,8 +57,10 @@ export default {
     removeContact(contactToDelete) {
       const confirm = window.confirm("Вы уверены что хотите удалить контакт?");
 
-      if (confirm) this.deleteContact(contactToDelete);
-      else return;
+      if (confirm) {
+        this.deleteContact(contactToDelete);
+        localStorage.setItem("contact-list", JSON.stringify(this.allContacts));
+      } else return;
     }
   }
 };
