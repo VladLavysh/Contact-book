@@ -85,7 +85,6 @@ export default {
   }
 
   .field-options {
-    //min-height: 40px;
     position: absolute;
     top: -8px;
     right: -145px;

@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "main-layots",
+    name: "main-layout",
     component: MainLayout
   },
   {

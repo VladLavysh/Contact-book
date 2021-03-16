@@ -5,34 +5,45 @@
     </div>
     <div class="add-contact__main main-info">
       <div class="main-info__icon" :style="{ 'background-color': randomColor }">
-        {{ contactAbbr || "" }}
+        {{ contactAbbr(firstName, secondName) || "" }}
       </div>
       <form class="main-info__create-form" @submit.prevent="submit">
         <div class="input-fields">
-          <input
-            :class="{ 'input-wrong': !firstName && isWrong }"
-            v-model.trim="firstName"
-            type="text"
-            maxlength="25"
-            placeholder="Имя"
-          />
-          <input
-            :class="{ 'input-wrong': !secondName && isWrong }"
-            v-model.trim="secondName"
-            type="text"
-            maxlength="25"
-            placeholder="Фамилия"
-          />
-          <input
-            :class="{ 'input-wrong': !phoneNumber && isWrong }"
-            v-model.trim="phoneNumber"
-            type="number"
-            min="100000000"
-            max="999999999999"
-            placeholder="Мобильный телефон"
-          />
+          <div class="input-fields__field-info">
+            <label>Имя</label>
+            <input
+              v-model.trim="firstName"
+              type="text"
+              maxlength="25"
+              placeholder="Пр. Владислав"
+            />
+          </div>
+          <div class="input-fields__field-info">
+            <label>Фамилия</label>
+            <input
+              v-model.trim="secondName"
+              type="text"
+              maxlength="25"
+              placeholder="Пр. Лавыш"
+            />
+          </div>
+          <div class="input-fields__field-info">
+            <label>Номер телефона</label>
+            <input
+              v-model.trim="phoneNumber"
+              type="number"
+              placeholder="Пр. 518 254 052"
+            />
+          </div>
         </div>
-        <button class="main-info__submit" type="submit">Создать</button>
+        <button
+          class="main-info__submit"
+          :class="{ 'main-info__submit-active': isSubmitActive }"
+          type="submit"
+          :disabled="!isSubmitActive"
+        >
+          Создать
+        </button>
       </form>
     </div>
   </div>
@@ -40,63 +51,54 @@
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
+import { validation } from "../utils.js";
 
 export default {
+  mixins: [validation],
+
   data: () => ({
     firstName: "",
     secondName: "",
-    phoneNumber: "",
-
-    isWrong: false
+    phoneNumber: ""
   }),
 
   methods: {
     ...mapMutations(["createContact", "changeVisibility"]),
 
     submit() {
-      if (this.firstName && this.secondName && this.phoneNumber) {
-        const newContact = {
-          firstName: this.capitalizeWord(this.firstName),
-          secondName: this.capitalizeWord(this.secondName),
-          phoneNumber: this.validPhoneNumber,
-          abbr: this.contactAbbr,
-          iconColor: this.randomColor,
-          idx: this.allContacts.length
-        };
+      const newContact = {
+        firstName: this.capitalizeWord(this.firstName),
+        secondName: this.capitalizeWord(this.secondName),
+        phoneNumber: this.phoneNumber,
+        iconColor: this.randomColor,
+        idx: this.allContacts.length
+      };
 
-        this.createContact(newContact);
+      this.createContact(newContact);
 
-        localStorage.setItem("contact-list", JSON.stringify(this.allContacts));
+      localStorage.setItem("contact-list", JSON.stringify(this.allContacts));
 
-        this.firstName = this.secondName = this.phoneNumber = "";
+      this.firstName = this.secondName = this.phoneNumber = "";
 
-        this.changeVisibility();
-      } else {
-        this.isWrong = true;
-        setTimeout(() => (this.isWrong = false), 2000);
-      }
-    },
-
-    capitalizeWord(word) {
-      return word[0].toUpperCase() + word.substring(1);
+      this.changeVisibility();
     }
   },
 
   computed: {
     ...mapGetters(["allContacts"]),
 
-    contactAbbr() {
-      const firstLetter = this.firstName[0]?.toUpperCase() || "";
-      const secondLetter = this.secondName[0]?.toUpperCase() || "";
-      return firstLetter + secondLetter;
-    },
-
     randomColor() {
       return "#" + Math.floor(Math.random() * 16777215).toString(16);
     },
 
-    validPhoneNumber() {
-      return "+" + this.phoneNumber.match(/\d{1,3}/g).join(" ");
+    isSubmitActive() {
+      return (
+        this.firstName &&
+        this.secondName &&
+        this.phoneNumber &&
+        this.phoneNumber.length > 5 &&
+        this.phoneNumber.length < 12
+      );
     }
   }
 };
@@ -148,9 +150,14 @@ export default {
     background-color: #6f96ed;
     color: #fff;
 
+    opacity: 0.5;
     outline: none;
-    cursor: pointer;
     transition: all 0.3s;
+  }
+
+  &__submit-active {
+    opacity: 1;
+    cursor: pointer;
 
     &:hover {
       transition: all 0.3s;
@@ -169,23 +176,21 @@ export default {
   align-items: center;
   margin-bottom: 10px;
 
-  &__add-new-field {
-    margin-top: 5px;
-    font-size: 1rem;
-    color: #6f96ed;
-    cursor: pointer;
+  &__field-info {
+    width: 100%;
+    min-height: 63px;
+    margin-bottom: 10px;
 
-    &:hover {
-      color: #4972ca;
-    }
-  }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 
-  .input-wrong {
-    border-color: #df6161;
-
-    &::placeholder {
-      transition: all 0.2s;
-      color: #df6161;
+    label {
+      margin-left: 25px;
+      align-self: flex-start;
+      font-size: 0.9rem;
+      color: #a1a1a1;
     }
   }
 

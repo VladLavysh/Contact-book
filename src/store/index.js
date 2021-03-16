@@ -9,8 +9,7 @@ export default new Vuex.Store({
       {
         firstName: "Vladislav",
         secondName: "Lavysh",
-        phoneNumber: "+48 518 254 052",
-        abbr: "VL",
+        phoneNumber: "48518254052",
         iconColor: "#f5bd48",
         idx: 0
       }
@@ -35,6 +34,14 @@ export default new Vuex.Store({
       state.contacts = state.contacts.filter(
         contact => contact !== contactToDelete
       );
+    },
+    updateContact(state, newContactData) {
+      state.selectedContact = Object.assign(
+        state.selectedContact,
+        newContactData
+      );
+
+      localStorage.setItem("contact-list", JSON.stringify(state.contacts));
     },
 
     createField(state, newField) {
@@ -74,10 +81,10 @@ export default new Vuex.Store({
     selectedContact(state) {
       const contactNum = window.location.pathname.match(/\d+/)?.join("");
 
-      console.log(contactNum);
+      state.selectedContact =
+        state.selectedContact || state.contacts[contactNum];
 
-      return state.selectedContact || state.contacts[contactNum];
-      //return state.contacts[0]; // --- !!! ---
+      return state.selectedContact;
     }
   }
 });

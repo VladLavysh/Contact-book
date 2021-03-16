@@ -5,13 +5,13 @@
         class="info__icon-abbr"
         :style="{ 'background-color': contact.iconColor }"
       >
-        {{ contact.abbr }}
+        {{ contactAbbr(contact.firstName, contact.secondName) }}
       </div>
       <span class="info__name-surname">
         {{ contact.firstName + " " + contact.secondName }}
       </span>
       <span class="info__phone">
-        {{ contact.phoneNumber }}
+        {{ validPhoneNumber(contact.phoneNumber) }}
       </span>
     </div>
     <span class="icon-info material-icons" @click.stop="toggleContactOptions">
@@ -33,10 +33,12 @@
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
+import { validation } from "../utils.js";
 
 export default {
-  name: "contact",
   props: { contact: Object },
+  mixins: [validation],
+
   data: () => ({
     showOptions: false
   }),

@@ -1,14 +1,6 @@
 <template>
   <div class="contact-card">
     <div class="contacts__header contact-info">
-      <router-link to="/">
-        <span
-          class="material-icons contact-info__icon-back"
-          @click="nullifyContact"
-        >
-          arrow_back_ios_new
-        </span>
-      </router-link>
       <span class="title">О контакте</span>
     </div>
     <div class="add-contact__main main-info">
@@ -16,31 +8,23 @@
         class="main-info__icon"
         :style="{ 'background-color': selectedContact.iconColor }"
       >
-        {{ selectedContact.abbr }}
+        {{ contactAbbr(firstName, secondName) }}
       </div>
-      <form class="main-info__create-form">
+      <form class="main-info__create-form" @submit.prevent="saveChanges">
         <div class="input-fields">
           <div class="input-fields__field-info">
             <label>Имя</label>
-            <input
-              :value="selectedContact.firstName"
-              type="text"
-              placeholder="Имя"
-            />
+            <input v-model="firstName" type="text" placeholder="Имя" />
           </div>
           <div class="input-fields__field-info">
             <label>Фамилия</label>
-            <input
-              :value="selectedContact.secondName"
-              type="text"
-              placeholder="Фамилия"
-            />
+            <input v-model="secondName" type="text" placeholder="Фамилия" />
           </div>
           <div class="input-fields__field-info">
             <label>Номер телефона</label>
             <input
-              :value="selectedContact.phoneNumber"
-              type="tel"
+              v-model.trim="phoneNumber"
+              type="number"
               placeholder="Мобильный телефон"
             />
           </div>
@@ -48,11 +32,19 @@
           <custom-input />
         </div>
 
-        <span class="input-fields__add-field">добавить поле</span>
+        <span
+          class="input-fields__add-field-btn"
+          :class="{ 'input-fields__add-btn-disabled': isFieldAdded }"
+          >добавить поле</span
+        >
 
         <div class="input-fields__buttons">
-          <button class="main-info__submit">Отменить</button>
           <button class="main-info__submit" type="submit">Сохранить</button>
+          <router-link to="/">
+            <button class="main-info__submit" @click="nullifyContact">
+              Отменить
+            </button>
+          </router-link>
         </div>
       </form>
     </div>
@@ -61,17 +53,30 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import { validation } from "../utils.js";
 import CustomInput from "./CustomInput.vue";
 
 export default {
+  mixins: [validation],
   components: {
     CustomInput
   },
 
-  created() {
-    //const selectedContactNum = window.location.pathname.match(/\d+/).join("");
-    //console.log(selectedContactNum);
-    //this.selectedContact(selectedContactNum);
+  data: () => ({
+    firstName: "",
+    secondName: "",
+    phoneNumber: "",
+
+    isFieldAdded: false
+  }),
+
+  mounted() {
+    setTimeout(() => {
+      // ---------- redo ---------- //
+      this.firstName = this.selectedContact.firstName;
+      this.secondName = this.selectedContact.secondName;
+      this.phoneNumber = this.selectedContact.phoneNumber;
+    }, 0);
   },
 
   computed: {
@@ -79,7 +84,17 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["nullifyContact"])
+    ...mapMutations(["nullifyContact", "updateContact"]),
+
+    saveChanges() {
+      this.$router.push("/");
+
+      this.updateContact({
+        firstName: this.capitalizeWord(this.firstName),
+        secondName: this.capitalizeWord(this.secondName),
+        phoneNumber: this.phoneNumber
+      });
+    }
   }
 };
 </script>
@@ -87,35 +102,10 @@ export default {
 <style lang="scss" scoped>
 .contact-info {
   padding-right: 25px;
-
-  &__icon-back {
-    cursor: pointer;
-
-    &:hover {
-      color: rgb(228, 228, 228);
-    }
-  }
 }
+
 .input-fields {
-  &__field-info {
-    width: 100%;
-    min-height: 63px;
-    margin-bottom: 10px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-
-    label {
-      margin-left: 25px;
-      align-self: flex-start;
-      font-size: 0.9rem;
-      color: #a1a1a1;
-    }
-  }
-
-  &__add-field {
+  &__add-field-btn {
     margin-bottom: 30px;
     cursor: pointer;
     color: #6f96ed;
@@ -125,9 +115,16 @@ export default {
     }
   }
 
+  &__add-btn-disabled {
+    pointer-events: none;
+    cursor: default;
+    color: #a7bff3;
+  }
+
   &__buttons {
     width: 95%;
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
   }
 }
