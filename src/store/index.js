@@ -7,11 +7,11 @@ export default new Vuex.Store({
   state: {
     contacts: [
       {
-        firstName: "Vladislav",
-        secondName: "Lavysh",
-        phoneNumber: "48518254052",
-        iconColor: "#f5bd48",
-        idx: 0
+        options: { idx: 0, iconColor: "#f5bd48" },
+        firstName: { title: "Имя", value: "Vladislav" },
+        secondName: { title: "Фамилия", value: "Lavysh" },
+        phoneNumber: { title: "Номер телефона", value: "48518254052" },
+        email: { title: "Email", value: "lavyshvlad1@gmail.com" }
       }
     ],
 

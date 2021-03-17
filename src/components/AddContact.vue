@@ -37,10 +37,12 @@
           </div>
         </div>
         <button
-          class="main-info__submit"
-          :class="{ 'main-info__submit-active': isSubmitActive }"
           type="submit"
-          :disabled="!isSubmitActive"
+          class="main-info__submit"
+          :class="{
+            'main-info__submit-active': isFormValid
+          }"
+          :disabled="!isFormValid"
         >
           Создать
         </button>
@@ -67,11 +69,10 @@ export default {
 
     submit() {
       const newContact = {
-        firstName: this.capitalizeWord(this.firstName),
-        secondName: this.capitalizeWord(this.secondName),
-        phoneNumber: this.phoneNumber,
-        iconColor: this.randomColor,
-        idx: this.allContacts.length
+        options: { idx: this.allContacts.length, iconColor: this.randomColor },
+        firstName: { title: "Имя", value: this.firstName },
+        secondName: { title: "Фамилия", value: this.secondName },
+        phoneNumber: { title: "Номер телефона", value: this.phoneNumber }
       };
 
       this.createContact(newContact);
@@ -91,13 +92,12 @@ export default {
       return "#" + Math.floor(Math.random() * 16777215).toString(16);
     },
 
-    isSubmitActive() {
+    isFormValid() {
       return (
         this.firstName &&
         this.secondName &&
         this.phoneNumber &&
-        this.phoneNumber.length > 5 &&
-        this.phoneNumber.length < 12
+        this.phoneNumber.length > 5
       );
     }
   }
@@ -111,6 +111,7 @@ export default {
   background-color: #daedf1;
 }
 .main-info {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

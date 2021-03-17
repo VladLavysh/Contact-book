@@ -3,23 +3,26 @@
     <div class="info">
       <div
         class="info__icon-abbr"
-        :style="{ 'background-color': contact.iconColor }"
+        :style="{ 'background-color': contact.options.iconColor }"
       >
-        {{ contactAbbr(contact.firstName, contact.secondName) }}
+        {{ contactAbbr(contact.firstName.value, contact.secondName.value) }}
       </div>
-      <span class="info__name-surname">
-        {{ contact.firstName + " " + contact.secondName }}
+      <span class="info__full-name">
+        {{ contactFullName }}
       </span>
       <span class="info__phone">
-        {{ validPhoneNumber(contact.phoneNumber) }}
+        {{ validPhoneNumber(contact.phoneNumber.value) }}
       </span>
     </div>
     <span class="icon-info material-icons" @click.stop="toggleContactOptions">
       more_vert
     </span>
     <div class="contact__options" v-if="showOptions">
-      <router-link :to="'/contact/' + contact.idx">
-        <span class="btn-contact-info" @click="selectContact(contact.idx)">
+      <router-link :to="'/contact/' + contact.options.idx">
+        <span
+          class="btn-contact-info"
+          @click="selectContact(contact.options.idx)"
+        >
           О контакте
         </span>
       </router-link>
@@ -47,7 +50,17 @@ export default {
     window.addEventListener("click", () => (this.showOptions = false));
   },
 
-  computed: mapGetters(["allContacts"]),
+  computed: {
+    ...mapGetters(["allContacts"]),
+
+    contactFullName() {
+      return (
+        this.capitalizeWord(this.contact.firstName.value) +
+        " " +
+        this.capitalizeWord(this.contact.secondName.value)
+      );
+    }
+  },
 
   methods: {
     ...mapMutations(["deleteContact", "selectContact"]),
@@ -143,7 +156,7 @@ export default {
       color: #fff;
       //background-color: rgb(248, 205, 113);
     }
-    &__name-surname {
+    &__full-name {
       width: 200px;
       margin-right: 5px;
 

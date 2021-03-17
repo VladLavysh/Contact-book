@@ -1,18 +1,91 @@
-          <custom-input
-            v-for="count of customInputsCount"
-            :key="count"
-            @field-created="activeField = !activeField"
-          />
+<template>
+  <div class="contact-card">
+    <div class="contacts__header contact-info">
+      <span class="title">О контакте</span>
+    </div>
+    <div class="add-contact__main main-info">
+      <div
+        class="main-info__icon"
+        :style="{ 'background-color': selectedContact.iconColor }"
+      >
+        {{ contactAbbr(firstName, secondName) }}
+      </div>
+      <form class="main-info__create-form" @submit.prevent="saveChanges">
+        <div class="input-fields">
+          <div class="input-fields__field-info">
+            <label>{{ selectedContact.firstName.title }}</label>
+            <input v-model="firstName" type="text" placeholder="Имя" />
+          </div>
+          <div class="input-fields__field-info">
+            <label>{{ selectedContact.secondName.title }}</label>
+            <input v-model="secondName" type="text" placeholder="Фамилия" />
+          </div>
+          <div class="input-fields__field-info">
+            <label>{{ selectedContact.phoneNumber.title }}</label>
+            <input
+              v-model.trim="phoneNumber"
+              type="number"
+              placeholder="Мобильный телефон"
+            />
+          </div>
 
-          <span
-            class="input-fields__add-new-field"
-            :class="{ 'add-btn-disabled': activeField }"
-            @click="addInputField"
-          >
-            добавить поле
-          </span>
+          <custom-input />
+        </div>
 
-    #          addInputField() {
-    #  this.customInputsCount++;
-    #  this.activeField = true;
-    #},
+        <span
+          class="input-fields__add-field-btn"
+          :class="{ 'input-fields__add-btn-disabled': isFieldAdded }"
+          >добавить поле</span
+        >
+
+        <div class="input-fields__buttons">
+          <button class="main-info__submit" type="submit">Сохранить</button>
+          <router-link to="/">
+            <button class="main-info__submit" @click="nullifyContact">
+              Отменить
+            </button>
+          </router-link>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+// ----------------------------------------------- //
+
+    selectedContactKeys() {
+      return Object.keys(this.allContacts[this.selectedContact.idx]);
+    },
+
+    fieldValue() {
+      const fieldValues = [];
+
+      for (let i = 2; i < 5; i++) {
+        const value = this.allContacts[this.selectedContact.idx][
+          this.selectedContactKeys[i]
+        ].value;
+
+        fieldValues.push(value);
+      }
+
+      return fieldValues;
+    }
+
+    
+    fieldTitle(index) {
+      if (this.selectedContactKeys[index]) {
+        return this.allContacts[this.selectedContact.idx][
+          this.selectedContactKeys[index]
+        ].title;
+      }
+    }
+
+    //fieldValue() {
+    //  const index = 2;
+
+    //  if (this.selectedContactKeys[index]) {
+    //    return this.allContacts[this.selectedContact.idx][
+    //      this.selectedContactKeys[index]
+    //    ].value;
+    //  }
+    //}
