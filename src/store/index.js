@@ -15,16 +15,14 @@ export default new Vuex.Store({
       }
     ],
 
-    customFieldsData: [],
-
     selectedContact: null,
 
     showAddContact: false
   },
 
   mutations: {
-    updateContacts(state, contactsFromLs) {
-      state.contacts = contactsFromLs;
+    updateContacts(state, updatedContacts) {
+      state.contacts = updatedContacts;
     },
 
     createContact(state, newContact) {
@@ -37,20 +35,9 @@ export default new Vuex.Store({
     },
     updateContact(state, newContactData) {
       state.selectedContact = Object.assign(
+        {},
         state.selectedContact,
         newContactData
-      );
-
-      localStorage.setItem("contact-list", JSON.stringify(state.contacts));
-    },
-
-    createField(state, newField) {
-      state.customFieldsData.unshift(newField);
-      console.log(state.customFieldsData);
-    },
-    deleteField(state, fieldToDelete) {
-      state.customFieldsData = state.customFieldsData.filter(
-        field => field !== fieldToDelete
       );
     },
 
@@ -64,16 +51,15 @@ export default new Vuex.Store({
       );
     },
     nullifyContact(state) {
-      state.selectedContact = null;
+      setTimeout(() => {
+        state.selectedContact = null;
+      }, 0);
     }
   },
 
   getters: {
     allContacts(state) {
       return state.contacts;
-    },
-    allFields(state) {
-      return state.customFieldsData;
     },
     isShown(state) {
       return state.showAddContact;

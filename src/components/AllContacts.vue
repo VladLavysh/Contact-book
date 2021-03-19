@@ -37,13 +37,7 @@ export default {
     }
   },
 
-  methods: {
-    ...mapMutations(["changeVisibility"])
-    //toggleAddContact() {
-    //  this.$emit("toggle-component");
-    //  this.isShown = !this.isShown;
-    //}
-  }
+  methods: mapMutations(["changeVisibility", "updateContacts"])
 };
 </script>
 

@@ -4,7 +4,10 @@
       <span class="title">Добавить контакт</span>
     </div>
     <div class="add-contact__main main-info">
-      <div class="main-info__icon" :style="{ 'background-color': randomColor }">
+      <div
+        class="main-info__icon"
+        :style="{ 'background-color': randomColor || '#f5bd48' }"
+      >
         {{ contactAbbr(firstName, secondName) || "" }}
       </div>
       <form class="main-info__create-form" @submit.prevent="submit">
@@ -170,6 +173,7 @@ export default {
 }
 
 .input-fields {
+  position: relative;
   min-width: 300px;
   display: flex;
   flex-direction: column;
@@ -178,6 +182,7 @@ export default {
   margin-bottom: 10px;
 
   &__field-info {
+    position: relative;
     width: 100%;
     min-height: 63px;
     margin-bottom: 10px;

@@ -10,14 +10,6 @@ export const validation = {
     },
     validPhoneNumber(phoneNumber) {
       return ("+" + phoneNumber).match(/.{1,3}/g).join(" ");
-    },
-    //isSubmitActive(obj) {
-    //  console.log(obj);
-    //  for (const value in obj) {
-    //    console.log(value);
-    //    if (!value.length) return false;
-    //    else return true;
-    //  }
-    //}
+    }
   }
 };
