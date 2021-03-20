@@ -25,6 +25,12 @@
           >
             <label>{{ capitalizeWord(contactData[idx].title) }}</label>
             <input type="text" v-model="contactInfo[contactKeys[idx]].value" />
+            <span
+              class="material-icons input-fields__remove-btn"
+              v-if="idx > 2"
+              @click="removeField(idx)"
+              >clear</span
+            >
           </div>
         </div>
 
@@ -72,6 +78,7 @@ export default {
 
   data: () => ({
     contactInfo: {},
+    prevContactState: null,
 
     showOptions: false,
     isFormValid: true,
@@ -138,12 +145,6 @@ export default {
       this.$router.push("/");
     },
 
-    createField(newField) {
-      this.contactInfo = Object.assign({}, this.contactInfo, newField);
-
-      this.updateContact(this.contactInfo);
-    },
-
     goBack() {
       const confirm = window.confirm(
         "Вы уверены что хотите перейти назад?\nИзмененные данные не сохранятся"
@@ -156,6 +157,29 @@ export default {
         this.updateContacts(notEditedContacts);
         this.nullifyContact();
         this.$router.push("/");
+      } else return;
+    },
+
+    // Брать состояние объекта до его изменения (шаг назад)
+
+    createField(newField) {
+      this.contactInfo = Object.assign({}, this.contactInfo, newField);
+
+      this.updateContact(this.contactInfo);
+    },
+
+    removeField(idx) {
+      const confirm = window.confirm("Вы уверены что хотите удалить поле?");
+
+      if (confirm) {
+        const prop = this.contactKeys[idx];
+
+        delete this.contactInfo[prop];
+        delete this.selectedContact[prop];
+
+        this.contactInfo = Object.assign({}, this.contactInfo);
+
+        this.updateContact(this.contactInfo);
       } else return;
     }
   }
