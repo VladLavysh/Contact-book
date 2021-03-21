@@ -1,3 +1,5 @@
+<!-- Главная страница приложения -->
+
 <template>
   <div :class="{ wrapper: isShown }">
     <add-contact v-if="isShown" />
@@ -11,6 +13,7 @@ import AddContact from "../components/AddContact.vue";
 import { mapGetters } from "vuex";
 
 export default {
+  name: "main-layout",
   components: {
     AllContacts,
     AddContact

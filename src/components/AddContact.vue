@@ -1,13 +1,12 @@
+<!-- Компонент, добавляющий контакт-->
+
 <template>
   <div class="contact-card">
     <div class="contacts__header">
       <span class="title">Добавить контакт</span>
     </div>
     <div class="add-contact__main main-info">
-      <div
-        class="main-info__icon"
-        :style="{ 'background-color': randomColor || '#f5bd48' }"
-      >
+      <div class="main-info__icon" :style="{ 'background-color': randomColor }">
         {{ contactAbbr(firstName, secondName) || "" }}
       </div>
       <form class="main-info__create-form" @submit.prevent="submit">
@@ -59,6 +58,7 @@ import { mapMutations, mapGetters } from "vuex";
 import { validation } from "../utils.js";
 
 export default {
+  name: "add-contact",
   mixins: [validation],
 
   data: () => ({
@@ -70,6 +70,7 @@ export default {
   methods: {
     ...mapMutations(["createContact", "changeVisibility"]),
 
+    // Добавляем новый контакт
     submit() {
       const newContact = {
         options: { idx: this.allContacts.length, iconColor: this.randomColor },

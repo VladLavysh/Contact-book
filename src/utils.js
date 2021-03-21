@@ -1,3 +1,5 @@
+// Файл, хранящий вспомогательные функции
+
 export const validation = {
   methods: {
     capitalizeWord(word) {

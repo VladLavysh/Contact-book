@@ -1,3 +1,5 @@
+<!-- Компонент, создающий новое поле контакта -->
+
 <template>
   <div class="card-wrapper">
     <div class="custom-fields input-fields">

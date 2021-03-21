@@ -1,16 +1,18 @@
+<!-- Компонент, генерирующий контакт -->
+
 <template>
   <div class="contact">
-    <div class="info">
+    <div class="contact-info">
       <div
-        class="info__icon-abbr"
+        class="contact-info__icon-abbr"
         :style="{ 'background-color': contact.options.iconColor }"
       >
         {{ contactAbbr(contact.firstName.value, contact.secondName.value) }}
       </div>
-      <span class="info__full-name">
+      <span class="contact-info__full-name">
         {{ contactFullName }}
       </span>
-      <span class="info__phone">
+      <span class="contact-info__phone">
         {{ validPhoneNumber(contact.phoneNumber.value) }}
       </span>
     </div>
@@ -39,6 +41,7 @@ import { mapMutations, mapGetters } from "vuex";
 import { validation } from "../utils.js";
 
 export default {
+  name: "contact",
   props: { contact: Object },
   mixins: [validation],
 
@@ -72,10 +75,10 @@ export default {
     removeContact(contactToDelete) {
       const confirm = window.confirm("Вы уверены что хотите удалить контакт?");
 
-      if (confirm) {
-        this.deleteContact(contactToDelete);
-        localStorage.setItem("contact-list", JSON.stringify(this.allContacts));
-      } else return;
+      if (!confirm) return;
+
+      this.deleteContact(contactToDelete);
+      localStorage.setItem("contact-list", JSON.stringify(this.allContacts));
     }
   }
 };
@@ -140,7 +143,7 @@ export default {
     }
   }
 
-  .info {
+  .contact-info {
     display: flex;
     align-items: center;
 
@@ -154,7 +157,6 @@ export default {
       margin-right: 30px;
       border-radius: 50%;
       color: #fff;
-      //background-color: rgb(248, 205, 113);
     }
     &__full-name {
       width: 200px;

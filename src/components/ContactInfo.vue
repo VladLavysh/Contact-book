@@ -1,3 +1,5 @@
+<!-- Компонент, выдающий информацию о контакте с возможностю изменения полей -->
+
 <template>
   <div class="contact-card">
     <div class="contacts__header contact-info">
@@ -71,6 +73,7 @@ import { validation } from "../utils.js";
 import CreateField from "./CreateField.vue";
 
 export default {
+  name: "contact-info",
   mixins: [validation],
   components: {
     CreateField
@@ -78,14 +81,13 @@ export default {
 
   data: () => ({
     contactInfo: {},
-    prevContactState: null,
 
     showOptions: false,
-    isFormValid: true,
-    defaultContacts: []
+    isFormValid: true
   }),
 
   beforeMount() {
+    // Инициализация начального состояния
     this.initState();
   },
 
@@ -118,6 +120,7 @@ export default {
     saveChanges() {
       let updatedContact = {};
 
+      // Создание обновленного контакта
       for (let i = 0; i < this.contactTitlesLength; i++) {
         const contactKey = this.contactKeys[i];
         const contactTitle = this.contactData[i].title;
@@ -150,37 +153,35 @@ export default {
         "Вы уверены что хотите перейти назад?\nИзмененные данные не сохранятся"
       );
 
-      if (confirm) {
-        const notEditedContacts = JSON.parse(
-          localStorage.getItem("contact-list")
-        );
-        this.updateContacts(notEditedContacts);
-        this.nullifyContact();
-        this.$router.push("/");
-      } else return;
-    },
+      if (!confirm) return;
 
-    // Брать состояние объекта до его изменения (шаг назад)
+      const notEditedContacts = JSON.parse(
+        localStorage.getItem("contact-list")
+      );
+      this.updateContacts(notEditedContacts);
+
+      this.nullifyContact();
+      this.$router.push("/");
+    },
 
     createField(newField) {
       this.contactInfo = Object.assign({}, this.contactInfo, newField);
-
       this.updateContact(this.contactInfo);
     },
 
     removeField(idx) {
       const confirm = window.confirm("Вы уверены что хотите удалить поле?");
 
-      if (confirm) {
-        const prop = this.contactKeys[idx];
+      if (!confirm) return;
 
-        delete this.contactInfo[prop];
-        delete this.selectedContact[prop];
+      const prop = this.contactKeys[idx];
 
-        this.contactInfo = Object.assign({}, this.contactInfo);
+      delete this.contactInfo[prop];
+      delete this.selectedContact[prop];
 
-        this.updateContact(this.contactInfo);
-      } else return;
+      this.contactInfo = Object.assign({}, this.contactInfo);
+
+      this.updateContact(this.contactInfo);
     }
   }
 };

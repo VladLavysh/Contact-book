@@ -1,3 +1,5 @@
+<!-- Компонент, отображающий все контакты -->
+
 <template>
   <div class="contacts">
     <div class="contacts__header">
@@ -37,7 +39,7 @@ export default {
     }
   },
 
-  methods: mapMutations(["changeVisibility", "updateContacts"])
+  methods: mapMutations(["changeVisibility"])
 };
 </script>
 
@@ -90,6 +92,7 @@ export default {
     border-radius: 5px;
     background-color: #daedf1;
   }
+
   &__warn {
     margin: auto;
   }
